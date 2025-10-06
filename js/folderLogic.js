@@ -99,7 +99,7 @@ function goForward(){
 		getFiles(pathHistory[historyIndex]);
 	}
 }
-getFiles("/");
+getFiles(curpath);
 
 breadcrumbs.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
