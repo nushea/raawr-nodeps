@@ -1,6 +1,7 @@
 const div = document.currentScript.parentElement;
 var curpath = "/";
-var pathHistory = [];
+var pathHistory = [ curpath ];
+var historyIndex = 0;
 
 function setCookie(name, value) {
     document.cookie = name + "=" + encodeURIComponent(value) + "; path=/";
@@ -25,8 +26,13 @@ async function filList(pathname) {
   try {
     const res = await fetch('http://localhost/api/wawAPI/' + curPath)
     const text = await res.text();
-	if((curPath.match(/\//g) || []).length == 2 && curPath.substring(1, curPath.lastIndexOf('/')) == "home")
-		setCookie('Username', curPath.substring(curPath.lastIndexOf('/')+1));
+	if(curPath.startsWith("/home/")){
+		var partialPath = curpath.substring(6);
+		if(partialPath.includes('/'))
+			partialPath = partialPath.substring(0, partialPath.indexOf('/'));
+		setCookie('UserPath', "/home/"+partialPath);
+
+	}
     return text.split('\n');
   } catch (err) {
     console.error('fetch failed:', err)
@@ -42,6 +48,7 @@ function FileBlock(path, type, name){
 	return '<a href="#" onClick="clickedFolder(\''+path+ '\'); return false;" class="card"><img class="logo" src="'+typePath+'"><p class>'+name+'</p></a>';
 }
 function getFiles(pathname){
+	console.log(historyIndex, pathHistory)
 	pathname = pathname.trim();
 	curpath = pathname;
 	var files;
@@ -53,9 +60,42 @@ function getFiles(pathname){
 	});
 }
 function clickedFolder(pathname){
+	if(pathHistory.length > 19)
+		pathHistory.shift();
+	if(historyIndex != pathHistory.length -1)
+		pathHistory = pathHistory.splice(0, historyIndex + 1);
 	pathHistory.push(pathname);
-	console.log(pathHistory);
+	historyIndex = pathHistory.length -1;
 	getFiles(pathname);
+}
+function goUp(){
+	if(curpath.indexOf('/') == curpath.lastIndexOf('/')){
+		clickedFolder("/");
+		return;
+	}
+	if(curpath.length>1){
+		clickedFolder(curpath.substring(0,curpath.lastIndexOf('/')));
+		return;
+	}
+	
+}
+function goHome(){
+	if(getCookie("UserPath") != null)
+		clickedFolder(getCookie("UserPath"));
+	else
+		clickedFolder("/home/");
+}
+function goBack(){
+	if(historyIndex > 0){
+		historyIndex -= 1;
+		getFiles(pathHistory[historyIndex]);
+	}
+}
+function goForward(){
+	if(historyIndex < pathHistory.length - 1){
+		historyIndex += 1;
+		getFiles(pathHistory[historyIndex]);
+	}
 }
 getFiles("/");
 
