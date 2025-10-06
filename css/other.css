@@ -1,0 +1,73 @@
+body{
+/*	overflow: hidden;*/
+}
+.card{
+	display: flex;
+	flex-direction: column;
+	width:12cqw;
+}
+.card>img{
+	width: 11cqw;
+}
+.card>p{
+	text-align:center;
+}
+.Files{
+	display: flex;
+	flex-wrap: wrap;
+	overflow-y: scroll;
+}
+.Upper{
+	height:10cqh;
+}
+.Lower{
+	height:90cqh;
+	overflow-y:hidden;
+}
+.Right{
+	flex-direction: column;
+	justify-content: space-between;
+}
+.navbar{
+	width:100%;
+	height: 6cqw;
+	display: flex;
+	flex-wrap: wrap;
+}
+.nav{
+	width:33.33%;
+}
+.AppName{
+	width:100%;
+	text-align: center;
+	display: flex;
+	justify-content: space-between;
+	font-size: 4cqw;
+}
+.navButtons{
+	display: flex;
+	width: 100%;
+}
+.navbut{
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+.nav>img{
+	width:100%;
+}
+.breadcrumbs{
+	width:100%;
+	font-size: 4cqw;
+	text-align: center;
+	background-color: #313244;
+	color: #f5c2e7;
+	border: 0.02vw solid #45475a;
+	padding: 0;
+	width: 100%;
+	font-family: inherit;
+}
