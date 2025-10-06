@@ -3,6 +3,8 @@ var curpath = "/";
 var pathHistory = [ curpath ];
 var historyIndex = 0;
 
+const breadcrumbs = div.parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild;
+console.log(breadcrumbs);
 function setCookie(name, value) {
     document.cookie = name + "=" + encodeURIComponent(value) + "; path=/";
 }
@@ -99,3 +101,9 @@ function goForward(){
 }
 getFiles("/");
 
+breadcrumbs.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+		clickedFolder(breadcrumbs.value);
+        event.preventDefault(); // prevents form submission if inside a form
+    }
+});
